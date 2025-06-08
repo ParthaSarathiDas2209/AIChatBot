@@ -1,52 +1,50 @@
+/* Container for the entire input controls */
 .Controls {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
+  display: flex; /* Align input and button in a row */
+  align-items: center; /* Vertically center the items */
+  gap: 8px; /* Space between textarea and send button */
+  width: 100%; /* Full width of container */
 }
 
+/* Wrapper for the textarea with padding and rounded background */
 .TextAreaContainer {
-  flex-grow: 1;
-  padding: 8px 16px;
-  line-height: 0;
-  border-radius: 16px;
-  -webkit-border-radius: 16px;
-  -moz-border-radius: 16px;
-  -ms-border-radius: 16px;
-  -o-border-radius: 16px;
-  background: light-dark(#ffffff, #212121);
+  flex-grow: 1; /* Fills remaining space */
+  padding: 8px 16px; /* Inner spacing */
+  line-height: 0; /* Removes extra vertical space */
+  border-radius: 16px; /* Rounded corners */
+  background: light-dark(#ffffff, #212121); /* Light/Dark theme support */
 }
 
+/* Styling for the input textarea */
 .TextArea {
-  width: 100%;
-  height: 100%;
-  border: none;
-  outline: none;
-  resize: none;
-  background: light-dark(#ffffff, #212121);
+  width: 100%; /* Take full container width */
+  height: 100%; /* Let it grow vertically */
+  border: none; /* No border */
+  outline: none; /* No focus outline */
+  resize: none; /* Disables manual resizing */
+  background: light-dark(#ffffff, #212121); /* Matches container */
 }
 
+/* Send button styling: round, centered icon */
 .Button {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; /* Center icon horizontally */
+  align-items: center; /* Center icon vertically */
   width: 36px;
   height: 36px;
   border: none;
-  border-radius: 50%;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -o-border-radius: 50%;
+  border-radius: 50%; /* Fully round button */
   outline: none;
-  background: light-dark(#0d0d0d, #ececec);
+  background: light-dark(#0d0d0d, #ececec); /* Inverted theme background */
 }
 
+/* Color for SVG icon inside button */
 .Button svg {
-  fill: light-dark(#f3f3f3, #171717);
+  fill: light-dark(#f3f3f3, #171717); /* Icon color based on theme */
 }
 
+/* Dim input and button when disabled */
 .TextArea:disabled,
 .Button:disabled {
-  opacity: 0.35;
+  opacity: 0.35; /* Reduce opacity to indicate disabled state */
 }

@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import styles from "./Chat.module.css";
 import Markdown from "react-markdown";
 
-// Simple Error Boundary - Catches errors during Markdown rendering
+// Simple error boundary for catching rendering issues in Markdown content
 const MarkdownErrorBoundary = ({ children }) => {
   const [hasError, setHasError] = useState(false);
 
@@ -13,9 +12,10 @@ const MarkdownErrorBoundary = ({ children }) => {
     return <div>Error rendering message.</div>;
   }
 
-  return <div onError={handleError}>{children}</div>; // onError handles errors within the children
+  return <div onError={handleError}>{children}</div>; // React doesn’t catch errors via onError in most cases; try/catch fallback could be better
 };
 
+// Default assistant greeting to appear on every new chat session
 const WELCOME_MESSAGE_GROUP = [
   {
     role: "assistant",
@@ -24,44 +24,42 @@ const WELCOME_MESSAGE_GROUP = [
 ];
 
 export function Chat({ messages }) {
-  const messageEndRef = useRef(null);
+  const messageEndRef = useRef(null); // Reference to scroll into view when new messages are added
 
-  // UseMemo to optimize the grouping of messages - avoids recalculation unless messages change
-  const messagesGroup = useMemo(
-    () =>
-      messages.reduce((groups, message) => {
-        if (message.role === "user") groups.push([]); // Start a new group for user messages
-        groups[groups.length - 1].push(message); // Add message to the current group
-        return groups;
-      }, []), // Initialize with an empty array
-    [messages] // Only recalculate if the messages array changes
-  );
+  // Group messages by user turns: each user message starts a new group with its responses
+  const messagesGroup = useMemo(() => {
+    return messages.reduce((groups, message) => {
+      if (message.role === "user") groups.push([]); // Start new group on user message
+      groups[groups.length - 1]?.push(message); // Add message to latest group
+      return groups;
+    }, []);
+  }, [messages]); // Only recompute when messages change
 
   useEffect(() => {
-    // Scroll to the bottom after a user message is added
+    // Scroll to the bottom after each user message is added
     const lastMessage = messages[messages.length - 1];
     if (lastMessage?.role === "user") {
       messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages]); // Only run effect when messages change
+  }, [messages]);
 
   return (
     <div className={styles.Chat}>
-      {/* Concatenate welcome message with user messages */}
-      {[WELCOME_MESSAGE_GROUP, ...messagesGroup].map((messages, groupIndex) => (
+      {/* Combine welcome message group with all grouped user/assistant messages */}
+      {[WELCOME_MESSAGE_GROUP, ...messagesGroup].map((group, groupIndex) => (
         <div key={groupIndex} className={styles.Group}>
-          {messages.map(({ role, content }, index) => (
+          {group.map(({ role, content }, index) => (
             <div key={index} className={styles.Message} data-role={role}>
-              {/* Wrap Markdown in Error Boundary */}
               <MarkdownErrorBoundary>
-                <Markdown>{content || ""}</Markdown>{" "}
-                {/* Render Markdown content, handle empty content */}
+                {/* Render assistant/user message content with Markdown support */}
+                <Markdown>{content || ""}</Markdown>
               </MarkdownErrorBoundary>
             </div>
           ))}
         </div>
       ))}
-      {/* Ref for scrolling to the bottom */}
+
+      {/* Dummy element to scroll into view on update */}
       <div ref={messageEndRef} />
     </div>
   );

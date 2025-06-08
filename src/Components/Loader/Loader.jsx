@@ -1,10 +1,9 @@
-import styles from "./Loader.module.css";
+import styles from "./Loader.module.css"; // Import scoped CSS module styles
 
 export function Loader() {
-  // Return a div with a class name from your CSS module for styling the overall container.
   return (
     <div className={styles.LoadMapper}>
-      {/* This div represents the actual loading animation itself.  The styling will be defined in Loader.module.css */}
+      {/* Animated loader circle or spinner (defined in CSS) */}
       <div className={styles.Loader}></div>
     </div>
   );

@@ -4,10 +4,9 @@ import styles from "./App.module.css";
 import { Chat } from "./Components/Chat/Chat";
 import { Controls } from "./Components/Controls/Controls";
 import { Loader } from "./Components/Loader/Loader";
-// import Select from "react-select";
-// import { Assistant } from "./Assistants/googleai";
 import { ProviderSelector } from "./Components/ProviderSelector/ProviderSelector";
 
+// Define available AI providers
 const PROVIDERS = [
   {
     id: "google",
@@ -25,32 +24,27 @@ const PROVIDERS = [
     id: "openrouter",
     name: "Mixtral (OpenRouter)",
     logo: "/openrouter.png",
-    // model: anthropic / claude - 3.5 - sonnet,
+    // model could be claude-3.5-sonnet, etc.
   },
 ];
 
 function App() {
-  // const assistant = getAssistant("google");
-  // assistant.chat("Hello").then((response) => {
-  //   console.log(response);
-  // });
-
+  // Load default provider (fallback to Google if env variable not set)
   const [provider, setProvider] = useState(
     import.meta.env.VITE_AI_PROVIDERS || "google"
   );
 
-  // const assistant = useMemo(() => getAssistant(provider), [provider]);
-
+  // Load corresponding assistant for current provider using useMemo
   const assistant = useMemo(() => {
     const model = PROVIDERS.find((p) => p.id === provider)?.model;
     return getAssistant(provider, model);
   }, [provider]);
 
+  // Test assistant connection once on mount or provider change
   useEffect(() => {
     const testAssistant = async () => {
       try {
         const response = await assistant.chat("Hello", []);
-        // assistant.chat("Hello").then((response) => {
         console.log(`Initial test message from ${provider}: `, response);
       } catch (err) {
         console.log(`Error testing ${provider}: `, err);
@@ -59,12 +53,12 @@ function App() {
     testAssistant();
   }, [assistant, provider]);
 
-  const [messages, setMessages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isStreaming, setIsStreaming] = useState(false);
+  const [messages, setMessages] = useState([]); // All chat messages
+  const [isLoading, setIsLoading] = useState(false); // For loader UI
+  const [isStreaming, setIsStreaming] = useState(false); // While receiving stream
 
+  // Append new content to the last assistant message
   function updateLastMessageContent(content) {
-    // 🔄 Updates the last assistant message by appending new content (for streaming)
     setMessages((prevMessages) =>
       prevMessages.map((message, index) =>
         index === prevMessages.length - 1
@@ -74,55 +68,58 @@ function App() {
     );
   }
 
+  // Add a new message (user, assistant, or system)
   function addMessage(message) {
-    // ➕ Adds a new message to the message array
     setMessages((prevMessages) => [...prevMessages, message]);
   }
 
+  // When user sends a message
   async function handleContentSend(content) {
     const history = messages.map(({ role, content }) => ({ role, content }));
-    // 🚀 Triggered when the user sends a message
     addMessage({ content, role: "user" });
     setIsLoading(true);
 
     try {
-      const result = await assistant.chatStream(content, history); // 🔸 Calls Gemini streaming API
+      const result = await assistant.chatStream(content, history);
       let isFirstChunk = false;
+
       for await (const chunk of result) {
-        // ✅ Streaming each chunk as it's received
         if (!isFirstChunk) {
           isFirstChunk = true;
-          addMessage({ content: "", role: "assistant" }); // Initial empty assistant message
+          addMessage({ content: "", role: "assistant" }); // Start streaming
           setIsLoading(false);
           setIsStreaming(true);
         }
 
-        updateLastMessageContent(chunk); // 🧩 Append stream chunk to assistant response
+        updateLastMessageContent(chunk); // Append response chunks
       }
 
-      setIsStreaming(false); // ✅ Done streaming
+      setIsStreaming(false); // Done
     } catch (error) {
-      // ❌ This is where the generic error gets triggered
-      console.error("Error during message send:", error); // 🔍 Print actual error in browser console
+      console.error("Error during message send:", error);
 
       addMessage({
         content:
-          "Sorry, Unable to process your request. Please Try Again Later!!!", // 🚨 What you see in the chat UI
+          "Sorry, Unable to process your request. Please Try Again Later!!!",
         role: "system",
       });
 
-      setIsLoading(false); // 🧹 Cleanup loading state
+      setIsLoading(false);
       setIsStreaming(false);
     }
   }
 
   return (
     <div className={styles.App}>
+      {/* Header Section */}
       <header className={styles.Header}>
         <div className={styles.HeaderTop}>
+          {/* Logo and Title */}
           <div className={styles.ActiveProviderBox}>
             <img className={styles.Logo} src="/chat-bot.png" />
             <h2 className={styles.Title}>AI ChatBot</h2>
+
+            {/* Provider Info */}
             <div className={styles.ActiveProvider}>
               <img
                 src={PROVIDERS.find((p) => p.id === provider).logo}
@@ -135,6 +132,7 @@ function App() {
             </div>
           </div>
 
+          {/* Loader while assistant responds */}
           {isLoading && (
             <div className={styles.LoaderUnderTitle}>
               <Loader />
@@ -143,54 +141,25 @@ function App() {
           )}
         </div>
 
+        {/* Provider Switcher */}
         <div className={styles.ProviderWrapper}>
-          {/* Custom Provider selector with buttons + logos */}
-          {/* {PROVIDERS.map((prov) => (
-            <button
-              key={prov.id}
-              onClick={() => {
-                if (prov.id !== provider) {
-                  setProvider(prov.id);
-                  addMessage({
-                    role: "system",
-                    content: `✅ You are now chatting with ${prov.name}.`,
-                  });
-                }
-              }}
-              // setProvider(prov.id)}
-              // className={`${styles.ProviderButton} $ {provider === prov.id ? styles.Active : ''} $ {styles[prov.id]}`}
-              className={`${styles.ProviderButton} ${
-                provider === prov.id ? styles.Active : ""
-              } ${styles[prov.id]}`}
-            >
-              {prov.name}
-            </button>
-          ))} */}
           <ProviderSelector
             providers={PROVIDERS}
             selectedProvider={provider}
             onChange={setProvider}
           />
-
-          {/* <select
-            className={styles.ProviderSelector}
-            value={provider}
-            onChange={(e) => setProvider(e.target.value)}
-          > */}
-          {/* {PROVIDERS.map((prov) => (
-              <option key={prov.id} value={prov.id}>
-                {prov.name}
-              </option>
-            ))} */}
-          {/* </select> */}
         </div>
       </header>
+
+      {/* Chat Window */}
       <div className={styles.ChatContainer}>
-        <Chat messages={messages} /> {/* 💬 Display messages */}
+        <Chat messages={messages} />
       </div>
+
+      {/* Input Controls */}
       <Controls
         isDisabled={isLoading || isStreaming}
-        onSend={handleContentSend} // 🧠 This is called when user presses Enter
+        onSend={handleContentSend}
       />
     </div>
   );

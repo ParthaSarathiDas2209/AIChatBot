@@ -1,31 +1,40 @@
 .Chat {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  height: 100%;
-  padding: 8px;
-  overflow-y: auto;
+  gap: 8px; /* Space between message groups */
+  height: 100%; /* Full height of the container */
+  padding: 8px; /* Inner padding for spacing */
+  overflow-y: auto; /* Enables vertical scrolling when needed */
 }
 
 .Group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 8px; /* Space between messages within a group */
 }
 
+/* Ensures the second-to-last group stretches to fill vertical space,
+   pushing the final message (user input) to the bottom */
 .Group:nth-last-child-of-type(2) {
-  /* 8px is for Gap between groups  */
-  min-height: calc(100% - 8px);
+  min-height: calc(100% - 8px); /* Leaves room for last group spacing */
 }
 
 .Message {
-  width: 78%;
-  padding: 0 15px;
-  border-radius: 16px;
-  font-size: 14px;
+  width: 78%; /* Message bubble width (not full width) */
+  padding: 0 15px; /* Horizontal padding for bubble content */
+  border-radius: 16px; /* Rounded corners for chat bubbles */
+  font-size: 14px; /* Message text size */
 
+  /* User messages: right-aligned with light/dark background */
   &[data-role="user"] {
     align-self: flex-end;
-    background: light-dark(#f3f3f3, #303030);
+    background: light-dark(#f3f3f3, #303030); /* Adapts to light/dark mode */
   }
+
+  /* Optionally, you can style assistant messages too:
+  &[data-role="assistant"] {
+    align-self: flex-start;
+    background: light-dark(#e0f7fa, #2a2a2a);
+  }
+  */
 }

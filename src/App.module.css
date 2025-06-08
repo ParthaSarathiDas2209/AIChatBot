@@ -1,3 +1,4 @@
+/* Main container styling for the whole app */
 .App {
   display: flex;
   flex-direction: column;
@@ -7,12 +8,15 @@
   padding: 16px;
 }
 
+/* Header section */
 .Header {
   text-align: center;
   align-items: center;
   justify-content: space-between;
   width: 100%;
 }
+
+/* Top part of the header with logo/title */
 .HeaderTop {
   display: flex;
   flex-direction: column;
@@ -21,6 +25,7 @@
   margin-bottom: 12px;
 }
 
+/* Loader section under title (e.g. "Thinking...") */
 .LoaderUnderTitle {
   margin-top: 8px;
   display: flex;
@@ -30,6 +35,7 @@
   -webkit-animation: fadeIn 0.5s ease-in;
 }
 
+/* Style for "Thinking..." text */
 .ThinkingText {
   margin-top: 6px;
   font-size: 0.9rem;
@@ -38,6 +44,7 @@
   -webkit-animation: fadeIn 0.8s ease-in;
 }
 
+/* Fade-in animation used by loader/thinking text */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -57,11 +64,13 @@
   }
 }
 
+/* App logo (bot icon) */
 .Logo {
   width: 64px;
   height: 64px;
 }
 
+/* App title next to logo */
 .Title {
   margin: 0;
   font-size: 1.5rem;
@@ -69,38 +78,37 @@
   text-align: center;
 }
 
+/* Container for the chat area */
 .ChatContainer {
   flex-grow: 1;
   width: 100%;
-  background: light-dark(#ffffff, #212121);
+  background: light-dark(#ffffff, #212121); /* Light/dark mode support */
   border-radius: 16px;
-  -webkit-border-radius: 16px;
-  -moz-border-radius: 16px;
-  -ms-border-radius: 16px;
-  -o-border-radius: 16px;
   overflow-y: auto;
   padding: 1rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
+/* Wrapper for the provider selector */
 .ProviderWrapper {
   margin-left: auto;
   padding-left: 1rem;
 }
 
+/* Dropdown-style selector (if used) */
 .ProviderSelector {
   padding: 0.5rem 0.75rem;
   font-size: 0.95rem;
   background-color: #2c2c2c;
-  border-radius: 4px;
-  color: #f0f0f0;
   border: 1px solid #444;
   border-radius: 6px;
+  color: #f0f0f0;
   margin-top: 8px;
   outline: none;
   cursor: pointer;
 }
 
+/* Button-style provider selector */
 .ProviderButton {
   margin-top: 10px;
   display: flex;
@@ -108,25 +116,18 @@
   justify-content: center;
 }
 
+/* Styling for each provider selection button */
 .ProviderButton {
   padding: 8px 14px;
   font-size: 0.9rem;
   border-radius: 6px;
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  -ms-border-radius: 6px;
-  -o-border-radius: 6px;
   background-color: #2c2c2c;
-  /* color: #fff; */
   border: 2px solid transparent;
   cursor: pointer;
   transition: 0.2s ease;
-  -webkit-transition: 0.2s ease;
-  -moz-transition: 0.2s ease;
-  -ms-transition: 0.2s ease;
-  -o-transition: 0.2s ease;
 }
 
+/* Border color overrides for specific providers */
 .Gemini {
   border-color: #4285f4;
 }
@@ -139,12 +140,14 @@
   border-color: #8854d0;
 }
 
+/* Active button style (currently selected provider) */
 .Active {
   background-color: #fff;
   color: #000;
   font-weight: bold;
 }
 
+/* Wrapper box showing active provider name/logo */
 .ActiveProviderBox {
   display: flex;
   flex-direction: column;
@@ -153,6 +156,7 @@
   margin-top: 8px;
 }
 
+/* Box that displays current provider (e.g. Gemini logo + text) */
 .ActiveProvider {
   display: flex;
   align-items: center;
@@ -160,8 +164,11 @@
   margin-top: 4px;
   font-size: 14px;
   color: #666;
+  transition: all 0.3s ease-in-out;
+  opacity: 1;
 }
 
+/* Icon for provider (within active provider display) */
 .ProviderIcon {
   width: 20px;
   height: 20px;
@@ -169,11 +176,13 @@
   object-fit: contain;
 }
 
+/* Label for provider text */
 .ProviderLabel {
   font-weight: 500;
   color: #ccc;
 }
 
+/* Layout for grid of provider cards */
 .ProviderList {
   display: flex;
   justify-content: center;
@@ -182,6 +191,7 @@
   flex-wrap: wrap;
 }
 
+/* Card for each provider */
 .ProviderCard {
   background-color: #2c2c2c;
   border: 2px solid transparent;
@@ -197,12 +207,14 @@
   transition: all 0.2s ease;
 }
 
+/* Hover effect for provider cards */
 .ProviderCard:hover {
   background-color: #383838;
   transform: translateY(-2px);
   box-shadow: 0 0 6px rgba(100, 100, 255, 0.3);
 }
 
+/* Image in the provider card */
 .ProviderCard img {
   width: 24px;
   height: 24px;
@@ -210,6 +222,7 @@
   margin-bottom: 4px;
 }
 
+/* Active (selected) card highlight */
 .ActiveCard {
   border-color: #00c6ff;
   background-color: #333;
@@ -217,6 +230,7 @@
   color: #fff;
 }
 
+/* Specific hover glow colors by provider */
 .ProviderCard.Gemini:hover {
   box-shadow: 0 0 6px #4285f4;
 }

@@ -2,60 +2,62 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./Controls.module.css";
 import TextareaAutoSize from "react-textarea-autosize";
 
+// Main input controls for the chat interface
 export function Controls({ isDisabled = false, onSend }) {
-  // useRef to access the textarea DOM element directly
-  const textareaRef = useRef(null);
-  // useState to manage the content of the textarea
-  const [content, setContent] = useState("");
+  const textareaRef = useRef(null); // Ref to control focus on the textarea
+  const [content, setContent] = useState(""); // Local state to hold input content
 
+  // Focus the textarea when it becomes enabled
   useEffect(() => {
-    // Focus the textarea when isDisabled is false.  This happens on mount and when isDisabled changes.
     if (!isDisabled) {
-      textareaRef.current.focus();
+      textareaRef.current?.focus();
     }
   }, [isDisabled]);
 
+  // Update local state when user types
   function handleContentChange(event) {
-    // Update the content state whenever the textarea value changes
     setContent(event.target.value);
   }
 
+  // Trigger message sending
   function handleContentSend() {
-    // Send the content if it's not empty
-    if (content.length > 0) {
-      onSend(content); // Call the provided onSend callback
-      setContent(""); // Clear the textarea after sending
+    if (content.trim().length > 0) {
+      onSend(content); // Send to parent
+      setContent(""); // Clear the input
     }
   }
 
+  // Handle Enter/Shift+Enter key behavior
   function handleEnterPress(event) {
-    // Send the message on Enter key press (unless Shift is held)
     if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault(); // Prevent a newline from being added
-      handleContentSend();
+      event.preventDefault(); // Prevent newline
+      handleContentSend(); // Send message
     }
   }
 
   return (
     <div className={styles.Controls}>
+      {/* Chat input box (resizes between 1-4 rows) */}
       <div className={styles.TextAreaContainer}>
-        {/* Auto-resizing textarea */}
         <TextareaAutoSize
-          ref={textareaRef} // Assign the ref for focusing
+          ref={textareaRef}
           className={styles.TextArea}
           placeholder="Message AI Chatbot"
-          value={content} // Bind the value to the state
+          value={content}
           minRows={1}
           maxRows={4}
-          onChange={handleContentChange} // Update state on change
-          onKeyDown={handleEnterPress} // Handle Enter key press
+          onChange={handleContentChange}
+          onKeyDown={handleEnterPress}
+          disabled={isDisabled}
         />
       </div>
-      {/* Send button, disabled when isDisabled is true */}
+
+      {/* Send button with icon */}
       <button
         className={styles.Button}
         disabled={isDisabled}
         onClick={handleContentSend}
+        aria-label="Send message"
       >
         <SendIcon />
       </button>
@@ -63,7 +65,7 @@ export function Controls({ isDisabled = false, onSend }) {
   );
 }
 
-// Simple SVG icon for the send button
+// Send icon as inline SVG
 function SendIcon() {
   return (
     <svg

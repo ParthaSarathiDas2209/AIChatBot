@@ -1,12 +1,21 @@
 :root {
+  /* Set base font stack for the application */
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+  /* Improve readability with consistent line height and font weight */
   line-height: 1.5;
   font-weight: 400;
 
+  /* Enable light/dark color scheme awareness for browsers */
   color-scheme: light dark;
+
+  /* Set dynamic text color for light and dark modes */
   color: light-dark(#0d0d0d, #ececec);
+
+  /* Set dynamic background color for light and dark modes */
   background-color: light-dark(#f3f3f3, #171717);
 
+  /* Optimize font rendering */
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -14,12 +23,20 @@
 }
 
 * {
+  /* Ensure consistent box sizing across all elements */
   box-sizing: border-box;
 }
 
 body {
+  /* Make the body responsive and centered */
   width: 100%;
+
+  /* Constrain body width on large screens */
   max-width: 640px;
+
+  /* Ensure body takes full viewport height */
   min-height: 100vh;
+
+  /* Center the body horizontally */
   margin: 0 auto;
 }

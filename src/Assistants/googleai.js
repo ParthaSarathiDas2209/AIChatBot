@@ -1,39 +1,38 @@
-import { GoogleGenerativeAI } from "@google/generative-ai"; // Import the Google Generative AI library
+import { GoogleGenerativeAI } from "@google/generative-ai"; // Import the Google Generative AI SDK
 
-const googleai = new GoogleGenerativeAI(import.meta.env.VITE_GOOGLE_AI_API_KEY); // Create a new Google Generative AI client, using the API key from environment variables
+// Initialize Google Generative AI client using API key from environment variables
+const googleai = new GoogleGenerativeAI(import.meta.env.VITE_GOOGLE_AI_API_KEY);
 
+// Export the Assistant class to handle chat functionality
 export class Assistant {
-  // Export a class named Assistant to manage the conversation with the AI
-  #chat; // Private property to store the active chat session
+  #chat; // Private property to store the chat session instance
 
   constructor(model = "gemini-1.5-flash") {
-    // Constructor, takes an optional model parameter, defaults to "gemini-1.5-flash"
-    const gemini = googleai.getGenerativeModel({ model }); // Get the specified generative model from the Google AI client
-    this.#chat = gemini.startChat({ history: [] }); // Start a new chat session with an empty history
+    // Constructor sets the model to use (default is Gemini 1.5 Flash)
+    const gemini = googleai.getGenerativeModel({ model }); // Get the generative model
+    this.#chat = gemini.startChat({ history: [] }); // Start a new chat session with empty history
   }
 
   async chat(content) {
-    // Asynchronous method to send a message and get a single response
+    // Sends a message and returns a single response from the model
     try {
-      const result = await this.#chat.sendMessage(content); // Send the message to the chat session
-      return result.response.text(); // Return the text of the AI's response
+      const result = await this.#chat.sendMessage(content); // Send user message
+      return result.response.text(); // Return the response as plain text
     } catch (error) {
-      // Catch any errors during the process
-      throw error; // Re-throw the error to be handled by the caller
+      throw error; // Re-throw error for external handling
     }
   }
 
   async *chatStream(content) {
-    // Asynchronous generator method to send a message and get a streamed response
+    // Sends a message and returns a streamed response using a generator
     try {
-      const result = await this.#chat.sendMessageStream(content); // Send the message to the chat session, requesting a stream
+      const result = await this.#chat.sendMessageStream(content); // Send user message and receive streaming response
       for await (const chunk of result.stream) {
-        // Iterate over the stream of response chunks
-        yield chunk.text(); // Yield each chunk's text, allowing the caller to process the response incrementally
+        // Iterate over streamed response chunks
+        yield chunk.text(); // Yield each chunk's text
       }
     } catch (error) {
-      // Catch any errors during the process
-      throw error; // Re-throw the error to be handled by the caller
+      throw error; // Re-throw error for external handling
     }
   }
 }

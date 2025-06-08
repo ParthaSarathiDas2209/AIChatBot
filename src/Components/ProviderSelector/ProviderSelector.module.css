@@ -1,78 +1,82 @@
+/* 🔲 Container for all provider buttons */
 .ProviderSelector {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 16px;
-  /* padding: 0 12px; */
+  display: flex;                    /* Arrange children in a row */
+  justify-content: center;         /* Center all buttons horizontally */
+  flex-wrap: wrap;                 /* Wrap to next line if overflowing */
+  gap: 12px;                       /* Space between buttons */
+  margin-top: 16px;                /* Space from top */
+  /* padding: 0 12px; */           /* Optional horizontal padding */
 }
 
-/* Card style for each provider */
+/* 🎴 Base style for each provider card */
 .ProviderCard {
-  background-color: #2c2c2c;
-  border: 2px solid transparent;
-  border-radius: 10px;
-  padding: 10px 14px;
-  width: 140px;
-  text-align: center;
-  font-size: 0.85rem;
-  color: #eee;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  outline: none;
-  /* flex: 1 1 calc(33.33% - 24px);
+  background-color: #2c2c2c;       /* Dark card background */
+  border: 2px solid transparent;   /* Base border (invisible unless active) */
+  border-radius: 10px;             /* Rounded corners */
+  padding: 10px 14px;              /* Inner spacing */
+  width: 140px;                    /* Fixed width for consistent layout */
+  text-align: center;             /* Center content text */
+  font-size: 0.85rem;             /* Smaller font */
+  color: #eee;                    /* Light text color */
+  display: flex;                  /* Flex for logo + text stacking */
+  flex-direction: column;        /* Stack logo above text */
+  align-items: center;           /* Center align items */
+  cursor: pointer;               /* Pointer cursor on hover */
+  transition: all 0.2s ease;     /* Smooth animation */
+  outline: none;                 /* Remove focus outline */
+  /* Responsive sizing (optional):
+  flex: 1 1 calc(33.33% - 24px);
   max-width: 140px; */
 }
 
-/* Hover effect */
+/* 🪄 Hover animation effect */
 .ProviderCard:hover {
-  transform: translateY(-2px);
+  transform: translateY(-2px);     /* Slight lift on hover */
 }
 
-/* Active style */
+/* ✅ Style for selected/active provider */
 .Active {
-  border-color: #00c6ff;
-  background-color: #444;
-  font-weight: bold;
-  color: #fff;
+  border-color: #00c6ff;           /* Cyan highlight border */
+  background-color: #444;          /* Slightly lighter background */
+  font-weight: bold;               /* Emphasize text */
+  color: #fff;                     /* Bright text */
 }
 
-/* Provider-specific hover glow */
+/* 💡 Glow hover for specific providers */
 .google:hover {
-  box-shadow: 0 0 6px #4285f4;
+  box-shadow: 0 0 6px #4285f4;     /* Blue glow for Google */
 }
 .openai:hover {
-  box-shadow: 0 0 6px #8854d0;
+  box-shadow: 0 0 6px #8854d0;     /* Purple glow for OpenAI */
 }
 .deepseek:hover {
-  box-shadow: 0 0 6px #4ac29a;
+  box-shadow: 0 0 6px #4ac29a;     /* Green glow for DeepSeek */
 }
 
+/* 🖼️ Logo image styling */
 .ProviderLogo {
   width: 28px;
   height: 28px;
-  object-fit: contain;
-  margin-bottom: 6px;
+  object-fit: contain;             /* Keep aspect ratio */
+  margin-bottom: 6px;              /* Space below logo */
 }
 
+/* 🏷️ Provider name text styling */
 .ProviderName {
-  font-weight: 500;
+  font-weight: 500;                /* Medium bold text */
 }
 
-/* ---------- Mobile Responsive ---------- */
+/* ---------- 📱 Mobile Responsive ---------- */
 @media (max-width: 768px) {
   .ProviderCard {
-    flex: 1 1 calc(50% - 16px);
+    flex: 1 1 calc(50% - 16px);    /* 2 cards per row on tablets */
     max-width: 100%;
   }
 }
 
 @media (max-width: 480px) {
   .ProviderCard {
-    flex: 1 1 100%;
+    flex: 1 1 100%;                /* Full width on small screens */
     max-width: 100%;
   }
 }

@@ -1,56 +1,51 @@
-import OpenAI from "openai";
+import OpenAI from "openai"; // Import the OpenAI SDK
 
-// Initialize OpenAI client with API key from environment variables.
-// `dangerouslyAllowBrowser: true` is necessary for browser environments but poses security risks; consider alternatives like server-side API calls for production.
+// Initialize OpenAI client using API key from environment variables.
+// `dangerouslyAllowBrowser: true` allows usage in browser (not recommended for production apps).
 const openai = new OpenAI({
-  apiKey: import.meta.env.VITE_OPEN_AI_API_KEY,
-  dangerouslyAllowBrowser: true, // Use with caution in production!
+  apiKey: import.meta.env.VITE_OPEN_AI_API_KEY, // Your OpenAI API key from .env
+  dangerouslyAllowBrowser: true, // Exposes API key in client-side code. Avoid in production!
 });
 
 export class Assistant {
-  #client; // Private member variable for the OpenAI client.
-  #model; // Private member variable for the model name.
+  #client; // Private variable to store the OpenAI client instance
+  #model; // Private variable to store the selected model name
 
-  // Constructor initializes the client and model.  Defaults to gpt-4o-mini.
   constructor(model = "gpt-4o-mini", client = openai) {
+    // Constructor accepts a model name and client instance; defaults to gpt-4o-mini
     this.#client = client;
     this.#model = model;
   }
 
-  // Asynchronous method for a single chat completion.
   async chat(content, history) {
+    // Sends a complete message (with history) to the OpenAI chat API and returns a single response
     try {
-      // Sends a chat completion request to the OpenAI API.
       const result = await this.#client.chat.completions.create({
-        model: this.#model,
-        messages: [...history, { content, role: "user" }], // Combines history and current user message.
+        model: this.#model, // The model to use (e.g., gpt-4o, gpt-3.5-turbo)
+        messages: [...history, { content, role: "user" }], // Include conversation history + latest user message
       });
-      // Returns the content of the assistant's response.
-      return result.choices[0].message.content;
+
+      return result.choices[0].message.content; // Return the assistant's response
     } catch (error) {
-      // Re-throws any errors encountered during the API call.
-      throw error;
+      throw error; // Re-throw any error so the caller can handle it
     }
   }
 
-  // Asynchronous generator for streaming chat completions.
   async *chatStream(content, history) {
+    // Sends a message and yields chunks of a streaming response from the assistant
     try {
-      // Sends a streaming chat completion request to the OpenAI API.
       const result = await this.#client.chat.completions.create({
         model: this.#model,
         messages: [...history, { content, role: "user" }],
-        stream: true, // Enables streaming responses.
+        stream: true, // Enable streaming mode
       });
 
-      // Iterates over the stream of chunks.
       for await (const chunk of result) {
-        // Yields the content of each chunk; handles cases where delta.content might be undefined.
-        yield chunk.choices[0]?.delta?.content || "";
+        // Iterate over streaming chunks
+        yield chunk.choices[0]?.delta?.content || ""; // Yield each partial response
       }
     } catch (error) {
-      // Re-throws any errors encountered during the API call.
-      throw error;
+      throw error; // Re-throw any error so the caller can handle it
     }
   }
 }

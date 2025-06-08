@@ -1,47 +1,43 @@
-/* .LoaderWrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: light-dark(#f3f3f3, #171717);
-  opacity: 0.6;
-} */
-
+/* The animated loader bar made of 3 pulsing dots */
 .Loader {
-  width: 60px;
-  aspect-ratio: 2;
+  width: 60px; /* Total width of loader */
+  aspect-ratio: 2; /* Keeps height proportional */
+
+  /* Custom property for repeated radial dot backgrounds */
   --_g: no-repeat
     radial-gradient(
       circle closest-side,
       light-dark(#0d0d0d, #ececec) 90%,
-      light-dark(#0d0d0d00, #ececec00)
+      /* Dot color: light/dark theme */ light-dark(#0d0d0d00, #ececec00)
+        /* Transparent edges */
     );
+
+  /* Set three dot positions: left, center, right */
   background: var(--_g) 0% 50%, var(--_g) 50% 50%, var(--_g) 100% 50%;
-  background-size: calc(100% / 3) 50%;
-  animation: l3 1s infinite linear;
+  background-size: calc(100% / 3) 50%; /* Each dot takes 1/3rd width */
+
+  animation: l3 1s infinite linear; /* Smooth looping animation */
 }
 
+/* Slightly higher opacity for overlay in dark mode */
 @media (prefers-color-scheme: dark) {
   .LoaderWrapper {
     opacity: 0.85;
   }
 }
 
+/* Animation keyframes for the pulsing dots */
 @keyframes l3 {
   20% {
-    background-position: 0% 0%, 50% 50%, 100% 50%;
+    background-position: 0% 0%, 50% 50%, 100% 50%; /* First dot jumps */
   }
   40% {
-    background-position: 0% 100%, 50% 0%, 100% 50%;
+    background-position: 0% 100%, 50% 0%, 100% 50%; /* Second dot jumps */
   }
   60% {
-    background-position: 0% 50%, 50% 100%, 100% 0%;
+    background-position: 0% 50%, 50% 100%, 100% 0%; /* Third dot jumps */
   }
   80% {
-    background-position: 0% 50%, 50% 50%, 100% 100%;
+    background-position: 0% 50%, 50% 50%, 100% 100%; /* Third dot falls */
   }
 }
