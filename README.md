@@ -1,12 +1,29 @@
-# React + Vite
+# 🤖 AI ChatBot — React Frontend with Multi-AI Provider Switching
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A lightweight, real-time AI chatbot built with **React** and **Vite**, supporting **Google Gemini**, **OpenAI GPT**, and **OpenRouter (Mixtral/Claude)** APIs. Designed for learning, demos, and showcasing frontend integration with modern AI models using streaming responses.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📌 Quick Overview
 
-## Expanding the ESLint configuration
+| Section              | Summary                                                    |
+|----------------------|------------------------------------------------------------|
+| 🔀 Provider Switching | Dynamically switch between Gemini, GPT, and Mixtral        |
+| 🧠 Real-time Chat     | Streams AI responses word-by-word like ChatGPT             |
+| ⚙️ API Integration    | Uses `.env` for secure keys, with fallback provider         |
+| 💡 Interview Use      | Ideal to explain React hooks, streaming, and API design    |
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## ✨ Key Features
+
+- 🌐 **Multi-Model Chat**: Use `Gemini`, `GPT-4o`, or `Mixtral` via a dropdown selector
+- 💬 **Streaming Responses**: Messages appear in chunks for real-time feel
+- 📦 **Modular Design**: Assistant logic separated in `getAssistant.js`
+- 🎨 **Responsive UI**: Custom CSS modules for clean, dark/light-ready interface
+- 🔁 **State Management**: Efficient usage of `useState`, `useEffect`, and `useMemo`
+
+---
+
+## 📁 Project Structure
+
